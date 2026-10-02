@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vigil-scan"
+version = "1.0.0"
+description = "Find it before they do — an offline secret and credential scanner for text you paste."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "at0m-b0mb" }]
+keywords = ["secrets", "credentials", "scanner", "entropy", "redaction", "security", "devsecops", "pre-commit"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: X11 Applications :: Qt",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Topic :: Security",
+    "Topic :: Software Development :: Quality Assurance",
+]
+dependencies = ["PyQt6>=6.5"]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0"]
+
+[project.urls]
+Homepage = "https://github.com/at0m-b0mb/Vigil-Secret-Scanner"
+Source = "https://github.com/at0m-b0mb/Vigil-Secret-Scanner"
+
+[project.scripts]
+vigil = "vigil.cli:main"
+
+[project.gui-scripts]
+vigil-gui = "vigil.app:main"
+
+[tool.setuptools]
+packages = ["vigil", "vigil.core", "vigil.ui"]

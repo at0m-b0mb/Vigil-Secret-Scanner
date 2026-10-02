@@ -1,0 +1,53 @@
+# ---------------------------------------------------------------------------
+# SYNTHETIC SAMPLE — the same application as leaky.env, configured the way you
+# would want to find it. Every credential is a reference to somewhere else.
+# Vigil should have nothing to report, which is the most it can ever say.
+# ---------------------------------------------------------------------------
+
+app:
+  name: orders-api
+  env: production
+  port: 8080
+  log_level: info
+
+aws:
+  region: eu-west-2
+  # Supplied by the task role at runtime; no key pair exists for this service.
+  access_key_id: ${AWS_ACCESS_KEY_ID}
+  secret_access_key: ${AWS_SECRET_ACCESS_KEY}
+
+github:
+  # Minted per job by the forge, scoped to this repository, expires in an hour.
+  token: ${GITHUB_TOKEN}
+
+stripe:
+  secret_key: <set-in-vault>
+  publishable_key: <set-in-vault>
+
+sendgrid:
+  api_key: "{{ vault_sendgrid_api_key }}"
+
+session:
+  secret: ${SESSION_SECRET}
+  cookie_name: orders_sid
+  max_age_seconds: 86400
+
+admin:
+  username: ops
+  password: changeme-on-first-boot
+
+database:
+  # The password half comes from the environment, so the URL can be logged.
+  url: postgres://orders_app@db.internal:5432/orders
+  password_env: ORDERS_DB_PASSWORD
+  pool_size: 12
+
+smtp:
+  host: smtp.internal
+  port: 587
+  username: mailer
+  password_file: /run/secrets/smtp_password
+
+telemetry:
+  endpoint: https://otel.internal:4317
+  sample_rate: 0.25

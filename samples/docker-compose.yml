@@ -1,0 +1,51 @@
+# ---------------------------------------------------------------------------
+# SYNTHETIC SAMPLE — a compose file whose credentials live in its URLs.
+# Every password below is fabricated. Connection strings are the most common
+# way a password ends up somewhere it was never meant to be read: in a log, in
+# a process listing, in an error message, in a crash report.
+# ---------------------------------------------------------------------------
+
+version: "3.9"
+
+services:
+  api:
+    image: registry.example.net/orders-api:1.4.2
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      APP_ENV: production
+      LOG_LEVEL: info
+      # The password is inside the URL, so everything that handles the URL
+      # handles the password.
+      DATABASE_URL: postgres://orders_app:not-a-real-db-password@db:5432/orders
+      ANALYTICS_URL: mongodb+srv://reporter:not-a-real-mongo-pass@cluster0.example.net/reports
+      # No password in this one — it is reached over the private network only.
+      CACHE_URL: redis://cache:6379/0
+      # Read from the environment at deploy time, not written here.
+      SESSION_SECRET: ${SESSION_SECRET}
+    depends_on:
+      - db
+      - cache
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: orders
+      POSTGRES_USER: orders_app
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    secrets:
+      - db_password
+
+  cache:
+    image: redis:7-alpine
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+
+volumes:
+  db-data:
+
+secrets:
+  db_password:
+    file: ./secrets/db_password.txt
