@@ -21,6 +21,8 @@ document the exposure sits, and never says the text is clean.**
 ![Tests](https://img.shields.io/badge/tests-783%20passing-2C6249?style=flat-square)
 ![License](https://img.shields.io/badge/license-MIT-6B6554?style=flat-square)
 
+**[Vigil project site](https://at0m-b0mb.github.io/Vigil-Secret-Scanner/)**
+
 </div>
 
 ---
